@@ -1,6 +1,8 @@
 # Zinc.NeosSearch
 
-A lightweight fulltext and term search for [Neos CMS](https://www.neos.io/). **Alpha**
+A lightweight fulltext and term search for [Neos CMS](https://www.neos.io/).
+
+Status: **Alpha**
 
 Project goals:
 - Simple to set up
@@ -36,7 +38,7 @@ Zinc:
 ```
 
 ### Configure NodeTypes
-See [How to index NodeType Properties](#-how-to-index-nodetype-properties).
+See [How to index NodeType Properties](#how-to-index-nodetype-properties).
 ```
 Neos.Neos:Document:
   properties:
@@ -77,7 +79,7 @@ Neos.Neos:Document:
   abstract: false
 ```
 
-[Or create server side queries](DistributionPackages/Zinc.NeosSearch/Resources/Private/Fusion/Examples/QueryData.fusion).
+[Or create server side queries](Resources/Private/Fusion/Examples/QueryData.fusion).
 
 ### Now the search should work 🎉
 
