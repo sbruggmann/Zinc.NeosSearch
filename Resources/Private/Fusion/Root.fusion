@@ -1,0 +1,67 @@
+include: ./Query/*.fusion
+
+prototype(Zinc.NeosSearch:Content.Search) < prototype(Neos.Neos:ContentComponent) {
+
+  zincSearch = Neos.Fusion:Component {
+    query = ${request.arguments.q}
+    page = ${request.arguments.p}
+    size = 5
+
+    @if.has = ${this.query}
+
+    renderer = afx`
+      <Zinc.NeosSearch:Query page={props.page} size={props.size}>
+        <Zinc.NeosSearch:Query.Must>
+          <Zinc.NeosSearch:Query.Term field="nodeTypeAndSuperTypes" term="Neos.Neos:Document" />
+          <Zinc.NeosSearch:Query.Should>
+            <Zinc.NeosSearch:Query.Match field="fulltext" query={props.query} />
+            <Zinc.NeosSearch:Query.Match property="title" query={props.query} boost="2" />
+          </Zinc.NeosSearch:Query.Should>
+        </Zinc.NeosSearch:Query.Must>
+      </Zinc.NeosSearch:Query>
+    `
+    @process.execute = ${ZincSearch.raw(site, value)}
+  }
+
+  renderer = afx`
+    <div class="zinc-search-fulltext-search">
+      <form action="">
+        <input type="text" name="q" value={request.arguments && request.arguments.q ? String.htmlSpecialChars(request.arguments.q) : ''} />
+        <button type="submit" style="margin-left: 2px;">Search</button>
+      </form>
+      <div @if={props.zincSearch} class="zinc-search-result">
+        <div class="zinc-search-result_info">
+          {props.zincSearch.hits.current.value} of {props.zincSearch.hits.total.value} results.
+        </div>
+        <Neos.Fusion:Loop items={props.zincSearch.hits.hits}>
+          <div class="zinc-search-result_item" data-node-identifier={item._source.identifier}>
+            <strong><a href={item._source.uri}>{item._source.properties_title}</a></strong><br />
+            {item._score}<br />
+            {item._source.nodePath}
+          </div>
+        </Neos.Fusion:Loop>
+        <div class="zinc-search-result_pagination" style="margin-top: 1rem;">
+          Pages:
+          <Neos.Fusion:Loop items={Array.range(1, props.zincSearch.hits.total.pages)}>
+              <a
+                href={'?q=' + String.htmlSpecialChars(request.arguments.q) + '&p=' + item}
+                style={(String.toInteger(props.zincSearch.hits.current.page) == String.toInteger(item) ? 'font-weight: bold; ' : '') + 'margin-left: 0.2rem; padding: 0.2rem 0.3rem; background: #f1f1f1;'}
+              >
+                {item}
+              </a>
+          </Neos.Fusion:Loop>
+        </div>
+      </div>
+    </div>
+  `
+
+  @cache {
+    mode = 'uncached'
+    context {
+      1 = 'node'
+      2 = 'documentNode'
+      3 = 'site'
+      4 = 'request'
+    }
+  }
+}

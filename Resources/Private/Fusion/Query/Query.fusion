@@ -1,0 +1,15 @@
+prototype(Zinc.NeosSearch:Query) < prototype(Neos.Fusion:Component) {
+  from = 0
+  size = 10
+  page = 0
+  stringify = false
+
+  renderer = Neos.Fusion:DataStructure {
+    from = ${props.page ? (String.toInteger(props.page) * props.size - props.size) : props.from}
+    size = ${props.size}
+    query = ${props.content}
+
+    @process.wrap = ${Json.stringify(value)}
+    @process.wrap.@if.stringify = ${props.stringify}
+  }
+}

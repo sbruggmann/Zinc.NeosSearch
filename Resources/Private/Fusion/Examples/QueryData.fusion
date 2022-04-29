@@ -1,0 +1,74 @@
+prototype(Zinc.NeosSearch:Example.QueryData) < prototype(Neos.Neos:ContentComponent) {
+
+  nodeByIdentifier = Neos.Fusion:Component {
+    nodeIdentifier = 'e9ffe2fe-e6d7-7025-50f1-6ecf2fa353c5'
+
+    renderer = afx`
+      <Zinc.NeosSearch:Query>
+        <Zinc.NeosSearch:Query.Must>
+          <Zinc.NeosSearch:Query.Term property="identifier" term={props.nodeIdentifier} />
+        </Zinc.NeosSearch:Query.Must>
+      </Zinc.NeosSearch:Query>
+    `
+    @process.execute = ${ZincSearch.nodes(site, value)[0]}
+  }
+
+  nodesByQuery = Neos.Fusion:Component {
+    excludeParentNodeShortcuts = true
+    excludeSelectedTargetShortcuts = false
+
+    renderer = afx`
+      <Zinc.NeosSearch:Query>
+        <Zinc.NeosSearch:Query.Must>
+          <Zinc.NeosSearch:Query.Should>
+            <Zinc.NeosSearch:Query.Term field="nodeTypeAndSuperTypes" term="Neos.Neos:Document" />
+            <Zinc.NeosSearch:Query.Term field="nodeTypeAndSuperTypes" term="Neos.Neos:Shortcut" />
+          </Zinc.NeosSearch:Query.Should>
+          <Zinc.NeosSearch:Query.Should>
+            <Zinc.NeosSearch:Query.Match property="title" query="shortcut" />
+            <Zinc.NeosSearch:Query.Match property="title" query="shortcuts" />
+          </Zinc.NeosSearch:Query.Should>
+          <Zinc.NeosSearch:Query.MustNot>
+            <Zinc.NeosSearch:Query.Term property="targetMode" term="parentNode" @if={props.excludeParentNodeShortcuts} />
+            <Zinc.NeosSearch:Query.Term property="targetMode" term="selectedTarget" @if={props.excludeSelectedTargetShortcuts} />
+          </Zinc.NeosSearch:Query.MustNot>
+        </Zinc.NeosSearch:Query.Must>
+      </Zinc.NeosSearch:Query>
+    `
+    @process.execute = ${ZincSearch.nodes(site, value)}
+
+    @process.loop = afx`
+      <ul>
+        <Neos.Fusion:Loop items={value}>
+          <li>
+            <Neos.Neos:NodeLink node={item}>
+              {q(item).property('title')} ({item.identifier} {item.nodeType.name})
+            </Neos.Neos:NodeLink>
+          </li>
+        </Neos.Fusion:Loop>
+      </ul>
+    `
+  }
+
+  renderer = afx`
+    <div>
+      <p>nodeByIdentifier result:</p>
+      <ul>
+        <li>
+          {q(props.nodeByIdentifier).property('title')} ({props.nodeByIdentifier.identifier} {props.nodeByIdentifier.nodeType.name})
+        </li>
+      </ul>
+
+      <p>nodesByQuery result:</p>
+      <ul>
+        <Neos.Fusion:Loop items={value}>
+          <li>
+            <Neos.Neos:NodeLink node={item}>
+              {q(item).property('title')} ({item.identifier} {item.nodeType.name})
+            </Neos.Neos:NodeLink>
+          </li>
+        </Neos.Fusion:Loop>
+      </ul>
+    </div>
+  `
+}

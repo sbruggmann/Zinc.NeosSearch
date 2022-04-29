@@ -1,0 +1,7 @@
+'Zinc.NeosSearch:Content.Search':
+  abstract: true
+  superTypes:
+    'Neos.Neos:Content': true
+  ui:
+    label: 'Zinc Search'
+    icon: 'icon-search'

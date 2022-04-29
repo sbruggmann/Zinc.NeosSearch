@@ -1,0 +1,3 @@
+prototype(Zinc.NeosSearch:Query.MustNot) < prototype(Neos.Fusion:Component) {
+  @class = 'Zinc\\NeosSearch\\Fusion\\Query\\BoolMustNotImplementation'
+}

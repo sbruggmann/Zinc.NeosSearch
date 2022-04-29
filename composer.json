@@ -1,0 +1,19 @@
+{
+    "description": "",
+    "type": "neos-package",
+    "name": "zinc/neos-search",
+    "require": {
+        "neos/neos": "~7.0",
+        "flowpack/jobqueue-doctrine": "~3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zinc\\NeosSearch\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Zinc.NeosSearch"
+        }
+    }
+}

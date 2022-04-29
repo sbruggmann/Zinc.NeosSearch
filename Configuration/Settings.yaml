@@ -1,0 +1,60 @@
+Neos:
+  Fusion:
+    defaultContext:
+      ZincSearch: 'Zinc\NeosSearch\Eel\SearchHelper'
+  Neos:
+    fusion:
+      autoInclude:
+        'Zinc.NeosSearch': true
+
+Flowpack:
+  JobQueue:
+    Common:
+      queues:
+        'zincBatchIndexer':
+          className: 'Flowpack\JobQueue\Doctrine\Queue\DoctrineQueue'
+          executeIsolated: true
+
+Zinc:
+  NeosSearch:
+    schema: 'http'
+    hostname: '127.0.0.1'
+    port: '4080'
+    username: 'admin'
+    password: 'Complexpass#123'
+    indexPrefix: 'neoscr'
+    realtimeIndexing:
+      enabled: false
+      queue: false
+
+    defaultNodeProperties:
+      identifier:
+        search:
+          zinc:
+            fieldName: 'identifier'
+            mappingType: 'keyword'
+            indexingValue: '${value}'
+      documentIdentifier:
+        search:
+          zinc:
+            fieldName: 'documentIdentifier'
+            mappingType: 'keyword'
+            indexingValue: '${value}'
+      nodeTypeAndSuperTypes:
+        search:
+          zinc:
+            fieldName: 'nodeTypeAndSuperTypes'
+            mappingType: 'keyword'
+            indexingValue: '${value}'
+      fulltext:
+        search:
+          zinc:
+            fieldName: 'fulltext'
+            mappingType: 'text'
+            indexingValue: '${value}'
+      uri:
+        search:
+          zinc:
+            fieldName: 'uri'
+            mappingType: 'keyword'
+            indexingValue: '${value}'

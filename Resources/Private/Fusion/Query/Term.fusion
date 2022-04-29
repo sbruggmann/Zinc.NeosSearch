@@ -1,0 +1,6 @@
+prototype(Zinc.NeosSearch:Query.Term) < prototype(Neos.Fusion:Component) {
+  @class = 'Zinc\\NeosSearch\\Fusion\\Query\\TermImplementation'
+
+  field = null
+  term = null
+}

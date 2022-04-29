@@ -1,0 +1,95 @@
+#'Neos.Neos:Node':
+#  properties:
+#    _path:
+#      search:
+#        zinc:
+#          fieldName: 'nodePath'
+#          mappingType: 'keyword'
+#          indexingValue: ${node.path}
+#    _parentPath:
+#      search:
+#        zinc:
+#          fieldName: 'parentPath'
+#          mappingType: 'keyword'
+#          indexingValue: ${value}
+#    _nodeType:
+#      search:
+#        zinc:
+#          fieldName: 'nodeType'
+#          mappingType: 'keyword'
+#          indexingValue: ${node.nodeType.name}
+#
+#'Neos.Neos:Hidable':
+#  properties:
+#    _hidden:
+#      search:
+#        zinc:
+#          fieldName: 'hidden'
+#          mappingType: 'bool'
+#          indexingValue: ${node.hidden}
+#
+#Neos.Neos:Document:
+#  properties:
+#    title:
+#      search:
+#        zinc:
+#          mappingType: 'text'
+#          indexingValue: ${node.properties.title}
+#          fulltextValue: ${node.properties.title}
+#
+#'Neos.Demo:Document.LandingPage':
+#  properties:
+#    title:
+#      search:
+#        zinc:
+#          mappingType: 'text'
+#          indexingValue: ${node.properties.title}
+#          fulltextValue: ${node.properties.title}
+#
+##Neos.Demo:Collection.Content.Teaser
+#
+##Neos.Demo:Collection.Content.Main
+#
+#'Neos.Demo:Content.Headline':
+#  properties:
+#    title:
+#      search:
+#        zinc:
+#          mappingType: 'text'
+#          indexingValue: ${node.properties.title}
+#          fulltextValue: ${node.properties.title}
+#
+#'Neos.Demo:Content.TextWithImage':
+#  properties:
+#    text:
+#      search:
+#        zinc:
+#          mappingType: 'text'
+##          indexingValue: ${node.properties.text}
+#          fulltextValue: ${node.properties.text}
+#
+#'Neos.Demo:Content.Text':
+#  properties:
+#    text:
+#      search:
+#        zinc:
+#          mappingType: 'text'
+##          indexingValue: ${node.properties.text}
+#          fulltextValue: ${node.properties.text}
+#
+#'Neos.Neos:Shortcut':
+#  properties:
+#    targetMode:
+#      search:
+#        zinc:
+#          mappingType: 'keyword'
+#          indexingValue: ${node.properties.targetMode}
+#
+#'Neos.NodeTypes.Navigation:Navigation':
+#  properties:
+#    selection:
+##      type: 'references'
+#      search:
+#        zinc:
+#          mappingType: 'keyword'
+#          indexingValue: ${value}

@@ -1,0 +1,9 @@
+prototype(Zinc.NeosSearch:Query.Match) < prototype(Neos.Fusion:Component) {
+  @class = 'Zinc\\NeosSearch\\Fusion\\Query\\MatchImplementation'
+
+  field = null
+  property = null
+  query = null
+  fuzziness = 'AUTO'
+  boost = null
+}

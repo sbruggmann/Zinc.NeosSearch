@@ -1,0 +1,4 @@
+Zinc_NeosSearch_Active_Index:
+  frontend: Neos\Cache\Frontend\VariableFrontend
+  backend: Neos\Cache\Backend\SimpleFileBackend
+  persistent: true

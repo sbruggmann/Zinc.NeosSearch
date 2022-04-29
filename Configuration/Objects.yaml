@@ -1,0 +1,29 @@
+Zinc\NeosSearch\Service\ZincService:
+  properties:
+    activeIndexCache:
+      object:
+        factoryObjectName: Neos\Flow\Cache\CacheManager
+        factoryMethodName: getCache
+        arguments:
+          1:
+            value: Zinc_NeosSearch_Active_Index
+
+Zinc\NeosSearch\Indexer\ZincIndexer:
+  properties:
+    activeIndexCache:
+      object:
+        factoryObjectName: Neos\Flow\Cache\CacheManager
+        factoryMethodName: getCache
+        arguments:
+          1:
+            value: Zinc_NeosSearch_Active_Index
+
+Zinc\NeosSearch\Trait\IndexNameTrait:
+  properties:
+    activeIndexCache:
+      object:
+        factoryObjectName: Neos\Flow\Cache\CacheManager
+        factoryMethodName: getCache
+        arguments:
+          1:
+            value: Zinc_NeosSearch_Active_Index
