@@ -1,5 +1,5 @@
 <?php
-namespace Zinc\NeosSearch\Trait;
+namespace Zinc\NeosSearch\Traits;
 
 use Neos\Flow\Annotations as Flow;
 use GuzzleHttp\Client;

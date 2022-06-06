@@ -18,7 +18,7 @@ Zinc\NeosSearch\Indexer\ZincIndexer:
           1:
             value: Zinc_NeosSearch_Active_Index
 
-Zinc\NeosSearch\Trait\IndexNameTrait:
+Zinc\NeosSearch\Traits\IndexNameTrait:
   properties:
     activeIndexCache:
       object:

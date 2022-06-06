@@ -21,9 +21,9 @@ use Neos\Flow\Mvc\Controller\Arguments as ControllerArguments;
 use Neos\Utility\Arrays;
 use \Neos\Eel\CompilingEvaluator;
 use Zinc\NeosSearch\Service\ZincService;
-use Zinc\NeosSearch\Trait\ConsoleLogTrait;
-use Zinc\NeosSearch\Trait\ExecTrait;
-use Zinc\NeosSearch\Trait\IndexNameTrait;
+use Zinc\NeosSearch\Traits\ConsoleLogTrait;
+use Zinc\NeosSearch\Traits\ExecTrait;
+use Zinc\NeosSearch\Traits\IndexNameTrait;
 
 /**
  * @Flow\Scope("singleton")
