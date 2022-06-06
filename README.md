@@ -65,6 +65,14 @@ Neos.Neos:Document:
           mappingType: 'keyword'
           indexingValue: ${value}
 
+'Neos.Neos:Node':
+  properties:
+    '_creationDateTime':
+      search:
+        zinc:
+          mappingType: 'date'
+          indexingValue: ${value}
+
 // ...
 ```
 
@@ -99,12 +107,16 @@ Vendor:NodeType:
 Available options:
 ```
 # If configured, this type is used for the field:
-mappingType: 'text', 'bool' or 'keyword'
+mappingType: 'text', 'bool', 'keyword' or 'date'
 
 # If configured, this value is added to the index:
+indexingValue: ${value}
+or specific..
 indexingValue: ${node.properties.aPropertyName}
 
 # If Configured, this value is added to the closest document fulltext field:
+indexingValue: ${value}
+or specific..
 fulltextValue: ${node.properties.aPropertyName}
 ```
 
@@ -161,6 +173,7 @@ Available Prototypes:
     - from = 0
     - size = 10
     - page = 0 (replaces `from`)
+    - sort = null (ex. `[{'properties__creationDateTime': 'desc'}]`)
     - stringify = false
 - Zinc.NeosSearch:Query.Should
   - Expects one or more nested Prototypes
@@ -175,11 +188,18 @@ Available Prototypes:
     - query = null
     - fuzziness = 'AUTO'
     - boost = null
-
+- Zinc.NeosSearch:Query.Prefix
+  - Default Props
+    - field = null
+    - term = null
 - Zinc.NeosSearch:Query.Term
   - Default Props
     - field = null
     - term = null
+- Zinc.NeosSearch:Query.Terms
+  - Default Props
+    - field = null
+    - terms = null
 
 ### Execute the search query
 

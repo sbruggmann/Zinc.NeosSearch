@@ -2,6 +2,7 @@ prototype(Zinc.NeosSearch:Query) < prototype(Neos.Fusion:Component) {
   from = 0
   size = 10
   page = 0
+  sort = null
   stringify = false
 
   renderer = Neos.Fusion:DataStructure {
