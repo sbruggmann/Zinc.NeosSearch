@@ -21,7 +21,7 @@ class SearchHelper implements ProtectedContextAwareInterface
      */
     public function raw(NodeInterface $node, array $payload)
     {
-        $indexName = $this->zincService->getIndexName($node->getDimensions());
+        $indexName = $this->zincService->getIndexName($node->getContext()->getDimensions());
         return $this->zincService->execute($indexName, $payload);
     }
 
