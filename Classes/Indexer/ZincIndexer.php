@@ -143,6 +143,7 @@ class ZincIndexer
 
             foreach ($indexingNodeTypeProperties[$node->getNodeType()->getName()] as $propertyName => $property) {
                 $fieldName = Arrays::getValueByPath($property, 'search.zinc.fieldName') ?: 'properties_' . $propertyName;
+                $mappingType = Arrays::getValueByPath($property, 'search.zinc.mappingType');
                 $indexingValueExpression = Arrays::getValueByPath($property, 'search.zinc.indexingValue');
                 $fulltextValueExpression = Arrays::getValueByPath($property, 'search.zinc.fulltextValue');
 
@@ -179,11 +180,28 @@ class ZincIndexer
                     case 'uri':
                         $value = $this->getNodeUrl($node);
                         break;
+                    case '_creationDateTime':
+                        $value = $node->getNodeData()->getCreationDateTime();
+                        break;
+                    case '_lastModificationDateTime':
+                        $value = $node->getNodeData()->getLastModificationDateTime();
+                        break;
+                    case '_lastPublicationDateTime':
+                        $value = $node->getNodeData()->getLastPublicationDateTime();
+                        break;
                     default:
                         if ($node->hasProperty($propertyName)) {
                             $propertyValue = $node->getNodeData()->getProperty($propertyName);
                             $value = is_array($propertyValue) ? implode(', ', $propertyValue) : $propertyValue;
                         }
+                }
+
+                switch ($mappingType) {
+                    case 'date':
+                        if (is_object($value) && get_class($value) === \DateTime::class) {
+                            $value = $value->format('c');
+                        }
+                        break;
                 }
 
                 $contextVariables = [
