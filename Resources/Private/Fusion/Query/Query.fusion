@@ -7,6 +7,7 @@ prototype(Zinc.NeosSearch:Query) < prototype(Neos.Fusion:Component) {
   renderer = Neos.Fusion:DataStructure {
     from = ${props.page ? (String.toInteger(props.page) * props.size - props.size) : props.from}
     size = ${props.size}
+    sort = ${props.sort}
     query = ${props.content}
 
     @process.wrap = ${Json.stringify(value)}

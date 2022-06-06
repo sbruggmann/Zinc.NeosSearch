@@ -9,6 +9,7 @@ use Neos\ContentRepository\Domain\Model\NodeType;
 use Neos\ContentRepository\Domain\Service\ContentDimensionCombinator;
 use Neos\Eel\FlowQuery\FlowQuery;
 use Neos\Neos\Controller\CreateContentContextTrait;
+use Neos\Neos\Domain\Model\Site;
 use Neos\Utility\Arrays;
 use Zinc\NeosSearch\Indexer\ZincIndexer;
 use Zinc\NeosSearch\Traits\ConsoleLogTrait;
@@ -179,25 +180,28 @@ class ZincService
         foreach( $allCombinations as $combination ) {
             $combinationHash = $this->getDimensionHash($combination);
 
-            $context = $this->createContentContext('live', $combination);
-            $nodes = (new FlowQuery([$context->getCurrentSiteNode()]))->find('[instanceof Neos.Neos:Document]')->get();
-            $data = [];
-            $collectChildDocumentNode = function (&$nodes, $node, $level) use (&$collectChildDocumentNode, &$data, &$combinationHash, &$traverseNodes, &$indexNode, &$indexingNodeTypeProperties, &$queue) {
-                $this->log(':');
-                if (!$queue) {
-                    $this->zincIndexer->indexNode($node, $indexingNodeTypeProperties, $combinationHash);
-                } else {
-                    $this->zincIndexer->queueIndexNode($node, $indexingNodeTypeProperties, $combinationHash);
-                }
-                $level++;
-                foreach ($node->getChildNodes('Neos.Neos:Document') as $childNode) {
-                    $collectChildDocumentNode($nodes, $childNode, $level);
-                }
-                $this->log('!');
-                $node = null;
-                unset($node);
-            };
-            $collectChildDocumentNode($nodes, $context->getCurrentSiteNode(), 0);
+            /** @var Site $site */
+            foreach ($this->_siteRepository->findOnline() as $site) {
+                $context = $this->createContentContext('live', $combination, $site->getNodeName());
+                $nodes = (new FlowQuery([$context->getCurrentSiteNode()]))->find('[instanceof Neos.Neos:Document]')->get();
+                $data = [];
+                $collectChildDocumentNode = function (&$nodes, $node, $level) use (&$collectChildDocumentNode, &$data, &$combinationHash, &$traverseNodes, &$indexNode, &$indexingNodeTypeProperties, &$queue) {
+                    $this->log(':');
+                    if (!$queue) {
+                        $this->zincIndexer->indexNode($node, $indexingNodeTypeProperties, $combinationHash);
+                    } else {
+                        $this->zincIndexer->queueIndexNode($node, $indexingNodeTypeProperties, $combinationHash);
+                    }
+                    $level++;
+                    foreach ($node->getChildNodes('Neos.Neos:Document') as $childNode) {
+                        $collectChildDocumentNode($nodes, $childNode, $level);
+                    }
+                    $this->log('!');
+                    $node = null;
+                    unset($node);
+                };
+                $collectChildDocumentNode($nodes, $context->getCurrentSiteNode(), 0);
+            }
 
             $nodes = [];
             unset($nodes);

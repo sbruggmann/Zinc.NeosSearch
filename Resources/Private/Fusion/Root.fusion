@@ -6,6 +6,7 @@ prototype(Zinc.NeosSearch:Content.Search) < prototype(Neos.Neos:ContentComponent
     query = ${request.arguments.q}
     page = ${request.arguments.p}
     size = 5
+    sitePath = ${site.path}
 
     @if.has = ${this.query}
 
@@ -13,6 +14,7 @@ prototype(Zinc.NeosSearch:Content.Search) < prototype(Neos.Neos:ContentComponent
       <Zinc.NeosSearch:Query page={props.page} size={props.size}>
         <Zinc.NeosSearch:Query.Must>
           <Zinc.NeosSearch:Query.Term field="nodeTypeAndSuperTypes" term="Neos.Neos:Document" />
+          <Zinc.NeosSearch:Query.Prefix field="nodePath" term={props.sitePath} />
           <Zinc.NeosSearch:Query.Should>
             <Zinc.NeosSearch:Query.Match field="fulltext" query={props.query} />
             <Zinc.NeosSearch:Query.Match property="title" query={props.query} boost="2" />
