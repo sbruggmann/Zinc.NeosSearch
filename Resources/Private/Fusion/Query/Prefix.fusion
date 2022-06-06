@@ -1,0 +1,6 @@
+prototype(Zinc.NeosSearch:Query.Prefix) < prototype(Neos.Fusion:Component) {
+  @class = 'Zinc\\NeosSearch\\Fusion\\Query\\PrefixImplementation'
+
+  field = null
+  term = null
+}
