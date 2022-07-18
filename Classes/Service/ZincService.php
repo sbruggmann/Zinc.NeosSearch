@@ -238,7 +238,11 @@ class ZincService
             if (strpos($indexName, $indexPrefix . '-') !== false) {
                 $resultBody = $this->exec('index/' . $indexName, 'DELETE');
                 $result = json_decode($resultBody, true);
-                $this->log('removed ' . $result['index']);
+                if (array_key_exists('message', $result) && $result['message'] === 'deleted') {
+                    $this->log('removed ' . $indexName);
+                } else {
+                    $this->log('failed to remove ' . $indexName);
+                }
             }
         }
     }

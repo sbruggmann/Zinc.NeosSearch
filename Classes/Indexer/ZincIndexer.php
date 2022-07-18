@@ -286,7 +286,7 @@ class ZincIndexer
                 }
 
                 foreach ($items as $item) {
-                    $this->exec($indexName . '/document', 'PUT', $item);
+                    $this->exec($indexName . '/_doc', 'PUT', $item);
                 }
 
                 $this->log('- ' . count($items) . ' in ' . $indexName);
