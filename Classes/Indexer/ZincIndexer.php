@@ -24,6 +24,7 @@ use Zinc\NeosSearch\Service\ZincService;
 use Zinc\NeosSearch\Traits\ConsoleLogTrait;
 use Zinc\NeosSearch\Traits\ExecTrait;
 use Zinc\NeosSearch\Traits\IndexNameTrait;
+use Behat\Transliterator\Transliterator;
 
 /**
  * @Flow\Scope("singleton")
@@ -94,13 +95,16 @@ class ZincIndexer
 
     public function indexNode(NodeInterface $node, $indexingNodeTypeProperties, $combinationHash) {
 
-        $normalizeFulltext = function (&$text) {
+        $compressFulltext = function (&$text) {
+            $text = preg_replace("/>/", ">\n", $text);
             $text = strip_tags($text);
             $text = preg_replace("/\n/", ' ', $text);
-            $text = strtolower($text);
-            $text = preg_replace('/[^a-z0-9 ]/', ' ', $text);
             $text = preg_replace('/\s+/', ' ', $text);
             $text = trim($text);
+        };
+
+        $normalizeFulltext = function (&$text) use ($compressFulltext) {
+            $text = Transliterator::transliterate($text, ' ');
         };
 
         $cachedNodeTypeNamesAndSupertypesInternal = [];
@@ -130,7 +134,7 @@ class ZincIndexer
             }
         };
 
-        $indexNode = function (NodeInterface &$node, &$data, &$combinationHash, &$fulltext) use(&$extractNodeTypeNamesAndSupertypesInternal, &$normalizeFulltext, &$indexingNodeTypeProperties) {
+        $indexNode = function (NodeInterface &$node, &$data, &$combinationHash, &$fulltext) use(&$extractNodeTypeNamesAndSupertypesInternal, &$compressFulltext, &$normalizeFulltext, &$indexingNodeTypeProperties) {
             $nodeTypes = [];
             $extractNodeTypeNamesAndSupertypesInternal($node->getNodeType(), $nodeTypes);
             $nodeTypeNames = array_values($nodeTypes);
@@ -227,6 +231,9 @@ class ZincIndexer
             }
 
             if ($node->getNodeType()->isOfType('Neos.Neos:Document')) {
+                $compressFulltext($fulltext);
+                $newItem['fullbodytext'] = $fulltext;
+
                 $normalizeFulltext($fulltext);
                 $newItem['fulltext'] = $fulltext;
             }
