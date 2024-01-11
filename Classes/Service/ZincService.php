@@ -93,11 +93,11 @@ class ZincService
 
     /**
      * @param TraversableNodeInterface $node
-     * @param $queue
+     * @param bool $queue
      * @return void
      * @throws \Neos\Eel\Exception
      */
-    public function updateNode(TraversableNodeInterface $node, $queue = false)
+    public function updateNode(TraversableNodeInterface $node, bool $queue = false)
     {
         $this->deleteNode($node->getIdentifier());
 
@@ -143,7 +143,7 @@ class ZincService
      * @param bool $queue
      * @return void
      */
-    public function indexNodes($queue = false)
+    public function indexNodes(bool $queue = false)
     {
         if (!$queue) {
             $this->zincIndexer->setConsole($this->console);
@@ -219,7 +219,7 @@ class ZincService
      * @param string $indexPrefix Default is 'test'
      * @return false|void
      */
-    public function purge($indexPrefix = '')
+    public function purge(string $indexPrefix = '')
     {
         if (!$indexPrefix) {
             $indexPrefix = $this->indexPrefix;
@@ -253,14 +253,15 @@ class ZincService
      * @param string $indexPrefix Default is 'test'
      * @return void
      */
-    public function list($indexPrefix = '')
+    public function list(string $indexPrefix = '')
     {
         if (!$indexPrefix) {
             $indexPrefix = $this->indexPrefix;
         }
 
         $resultBody = $this->exec('index');
-        $indexes = \json_decode($resultBody, true);
+        $result = \json_decode($resultBody, true);
+        $indexes = $result['list'];
 
         $activeIndexTimestamp = null;
         if ($this->activeIndexCache->has('indexTimestamp')) {
@@ -314,7 +315,7 @@ class ZincService
             return false;
         }
 
-        if ($results['error']) {
+        if (isset($results['error']) && $results['error']) {
             $this->log($results['error']);
             return false;
         }

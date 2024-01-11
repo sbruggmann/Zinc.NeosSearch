@@ -22,7 +22,7 @@ class ZincCommandController extends CommandController
      * @param bool $queue Insert into the queue or not
      * @return void
      */
-    public function indexCommand($queue = false)
+    public function indexCommand(bool $queue = false)
     {
         $millisecondsStart = round(microtime(true) * 1000);
 
@@ -40,7 +40,7 @@ class ZincCommandController extends CommandController
      * @param string $indexPrefix Default is 'test'
      * @return void
      */
-    public function purgeCommand($indexPrefix = '')
+    public function purgeCommand(string $indexPrefix = '')
     {
         $this->zincService->setLogHook($this->getLogHook());
         $this->zincService->purge($indexPrefix);
@@ -52,7 +52,7 @@ class ZincCommandController extends CommandController
      * @param string $indexPrefix Default is 'test'
      * @return void
      */
-    public function listCommand($indexPrefix = '')
+    public function listCommand(string $indexPrefix = '')
     {
         $this->zincService->setLogHook($this->getLogHook());
         $this->zincService->list($indexPrefix);
@@ -71,7 +71,7 @@ class ZincCommandController extends CommandController
             if (isset($data['table'])) {
                 $this->output->outputTable($data['table']['rows'], isset($data['table']['headers']) ? $data['table']['headers'] : null);
             } else if (!empty($data)) {
-                \Neos\Flow\var_dump($data);
+                \Neos\Flow\var_dump($data, 'Log Hook Output');
             }
         };
     }

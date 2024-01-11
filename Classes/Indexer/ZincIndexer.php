@@ -267,8 +267,10 @@ class ZincIndexer
         $dumpData = function (&$data) use (&$mappings, &$indexTimestamp) {
             //$this->log('  ');
 
-            $indexesData = $this->exec('index');
-            $indexes = json_decode($indexesData);
+            $resultData = $this->exec('index');
+            $result = json_decode($resultData);
+            $indexes = $result->list;
+
             $indexNames = array_map(function ($item) {
                 return $item->name;
             }, $indexes);
@@ -319,7 +321,7 @@ class ZincIndexer
      * @param boolean $absolute
      * @return string
      */
-    public function getNodeUrl(NodeInterface $node, $format = 'html', $absolute = false) {
+    public function getNodeUrl(NodeInterface $node, string $format = 'html', bool $absolute = false) {
 
         try {
             $uri = $this->linkingService->createNodeUri(

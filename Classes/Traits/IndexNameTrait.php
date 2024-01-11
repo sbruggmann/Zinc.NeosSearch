@@ -31,7 +31,7 @@ trait IndexNameTrait
      * @param array $dimensionCombination
      * @return string
      */
-    private function getDimensionHash($dimensionCombination)
+    private function getDimensionHash(array $dimensionCombination)
     {
         $dimensionHashes = [];
         foreach ($dimensionCombination as $dimension => $values) {
@@ -42,10 +42,10 @@ trait IndexNameTrait
 
     /**
      * @param mixed $dimensionCombinationOrHash
-     * @param string $indexTimestamp
+     * @param string|null $indexTimestamp
      * @return string
      */
-    public function getIndexName($dimensionCombinationOrHash = null, $indexTimestamp = null)
+    public function getIndexName($dimensionCombinationOrHash = null, string $indexTimestamp = null)
     {
         if (!$indexTimestamp) {
             $indexTimestamp = $this->activeIndexCache->get('indexTimestamp');

@@ -27,7 +27,7 @@ trait ExecTrait
      * @param mixed $payload
      * @return false|string|null
      */
-    private function exec($endpoint, $method = 'GET', $payload = null, $type = 'api')
+    private function exec(string $endpoint, string $method = 'GET', $payload = null, $type = 'api')
     {
         $uri = sprintf('%s://%s:%s/%s/%s',
             $this->zincSettings['schema'],

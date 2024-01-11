@@ -3,7 +3,7 @@
     "type": "neos-package",
     "name": "zinc/neos-search",
     "require": {
-        "neos/neos": "~7.0",
+        "neos/neos": "~8.0",
         "flowpack/jobqueue-doctrine": "~3.1"
     },
     "autoload": {

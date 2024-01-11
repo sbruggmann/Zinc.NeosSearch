@@ -2,8 +2,6 @@
 
 A lightweight fulltext and term search for [Neos CMS](https://www.neos.io/).
 
-Status: **Alpha**
-
 Project goals:
 - Simple to set up
 - Minimal hardware requirements
@@ -14,15 +12,30 @@ Project goals:
 ### Start Zinc Search Index
 See [Zinc Documentation](https://docs.zinclabs.io/04_installation/).
 ```
-# Go:
-mkdir data
-ZINC_FIRST_ADMIN_USER=admin ZINC_FIRST_ADMIN_PASSWORD=Complexpass#123 ./zinc
-```
-or
-```
-# Docker:
-mkdir data
-docker run -v /path/to/zinc/data:/data -e DATA_PATH="/data" -p 4080:4080 -e ZINC_FIRST_ADMIN_USER=admin -e ZINC_FIRST_ADMIN_PASSWORD=Complexpass#123 --name zinc public.ecr.aws/h9e2j3o7/zinc:0.1.9
+# DDEV config in .ddev/docker-compose.zincsearch.yaml:
+version: '3.6'
+services:
+  zincsearch:
+    container_name: ddev-${DDEV_SITENAME}-zincsearch
+    hostname: ${DDEV_SITENAME}-zincsearch
+    image: public.ecr.aws/zinclabs/zincsearch:0.4.9
+    expose:
+      - "4080"
+    ports:
+      - "4080"
+    environment:
+      - ZINC_FIRST_ADMIN_USER=admin
+      - ZINC_FIRST_ADMIN_PASSWORD=Complexpass#123
+      - ZINC_DATA_PATH=/usr/share/zincsearch/data
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: $DDEV_APPROOT
+    volumes:
+      - ./zinc:/usr/share/zincsearch
+      - ".:/mnt/ddev_config"
+
+volumes:
+  zincsearch:
 ```
 
 ### Install and configure Zinc.NeosSearch
@@ -34,7 +47,7 @@ Settings.Zinc.yaml:
 ```
 Zinc:
   NeosSearch:
-    hostname: '123.123.123.123'
+    hostname: 'ddev-YOUR_DDEV_SITENAME-zincsearch'
 ```
 
 ### Configure NodeTypes
